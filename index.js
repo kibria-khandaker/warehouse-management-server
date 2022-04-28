@@ -10,7 +10,7 @@ app.use(express.json());
 
 // main root API
 app.get('/', (req, res)=>{
-    res.send('Server Is Working')
+    res.send('Server Is Working Now')
 });
 
 // This force to run to this port
