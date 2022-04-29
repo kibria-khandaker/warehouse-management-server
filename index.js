@@ -14,12 +14,6 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yzwpe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-// client.connect(err => {
-//   const collection = client.db("fruitsHouse").collection("product");
-//   // perform actions on the collection object
-//   console.log("Thanks for Mongo DB connection bro");
-//   client.close();
-// });
 
 async function run(){
     try {
@@ -45,6 +39,3 @@ app.get('/', (req, res)=>{
 app.listen(port, ()=>{
     console.log('Listening to port', port);
 })
-
-// fruitsStock
-// Ajxpj8zrG9FSzJDX
