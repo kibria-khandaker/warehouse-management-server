@@ -5,7 +5,7 @@ const express = require('express');
 const cors = require('cors');
 
 // Browser/Client site access Server environment(.env file) variables
-require ('dotenv').config();
+require('dotenv').config();
 
 // Connection  Server with MDB database and MDB objects
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -27,14 +27,14 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 // main function working for server 
-async function run(){
+async function run() {
     try {
         await client.connect();
         // Database Name and Table Name 
         const fruitsCollection = client.db("fruitsHouse").collection("product");
 
         // Get All Data From Database or MDB
-        app.get('/product', async(req, res)=>{
+        app.get('/product', async (req, res) => {
             const query = {};
             const cursor = fruitsCollection.find(query);
             const products = await cursor.toArray();
@@ -42,33 +42,40 @@ async function run(){
         })
 
         // Get Single item Data base on item's ID From Database or MDB 
-        app.get('/inventory/:id', async(req,res)=>{
+        app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             const product = await fruitsCollection.findOne(query);
             res.send(product)
         })
 
         // Add a new item in database 
-        app.post('/product', async(req, res)=>{
+        app.post('/product', async (req, res) => {
             const newProduct = req.body;
             const result = await fruitsCollection.insertOne(newProduct);
             res.send(result)
         })
 
+        // DELETE items from database & UI
+        app.delete('/product/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await fruitsCollection.deleteOne(query);
+            res.send(result);
+        })
 
 
     }
-    finally{}
+    finally { }
 }
 run().catch(console.dir)
 
 // main root API & main route run and testing 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.send('Server Is Working Now')
 });
 
 // This force to run Server to this port
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log('Listening to port', port);
 })
