@@ -57,13 +57,30 @@ async function run() {
         })
 
         // DELETE items from database & UI
-        app.delete('/product/:id', async (req, res) => {
+        app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await fruitsCollection.deleteOne(query);
             res.send(result);
         })
 
+        // Update items 
+        app.put('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateStockNumber = req.body;
+            console.log(updateStockNumber, id);
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+
+            const updateDoc = {
+                $set: {
+                    inStock: updateStockNumber.inStock,
+                },
+            };
+
+            const result = await fruitsCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
 
     }
     finally { }
