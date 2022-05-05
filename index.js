@@ -29,6 +29,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // main function working for server 
 async function run() {
     try {
+        
         await client.connect();
         // Database Name and Table Name 
         const fruitsCollection = client.db("fruitsHouse").collection("product");
@@ -64,7 +65,7 @@ async function run() {
             res.send(result);
         })
 
-        // Update items 
+        // Update items ----
         app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const updateStockNumber = req.body;
@@ -81,7 +82,6 @@ async function run() {
             const result = await fruitsCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
-
     }
     finally { }
 }
