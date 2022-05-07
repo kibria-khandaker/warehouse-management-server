@@ -4,6 +4,9 @@ const express = require('express');
 // Server Link with Client site data passing permission
 const cors = require('cors');
 
+// Require For make jsonwebtoken 
+const jwt = require('jsonwebtoken');
+
 // Browser/Client site access Server environment(.env file) variables
 require('dotenv').config();
 
@@ -29,10 +32,17 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // main function working for server 
 async function run() {
     try {
-        
+
         await client.connect();
         // Database Name and Table Name 
         const fruitsCollection = client.db("fruitsHouse").collection("product");
+
+        app.post('/login', (req, res) => {
+            const email = req.body;
+            const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+            // console.log(email, token);
+            res.send({ token })
+        })
 
         // Get All Data From Database or MDB
         app.get('/product', async (req, res) => {
@@ -53,8 +63,31 @@ async function run() {
         // Add a new item in database 
         app.post('/product', async (req, res) => {
             const newProduct = req.body;
-            const result = await fruitsCollection.insertOne(newProduct);
-            res.send(result)
+
+            // const result = await fruitsCollection.insertOne(newProduct);
+            // res.send(result)
+
+            
+
+            // verify JWT token start ---------
+            const tokenHeader = req.headers.authorization;
+            // console.log(tokenHeader);
+            const [email, accessToken] = tokenHeader.split(" ")
+            // console.log(email, accessToken);
+            // const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+            const decoded = verifyJwToken(accessToken)
+            // console.log(decoded);
+            // verify JWT token end --
+            if (email === decoded.email) {
+                const result = await fruitsCollection.insertOne(newProduct);
+                // res.send(result)
+                res.send({ success: 'Thanks, Your Item Successfully Added', product:newProduct })
+            } else {
+                res.send({ success: 'Your are UnAuthorized, Broo..! ' })
+            }
+            // verify JWT token end ---------
+
+
         })
 
         // DELETE items from database & UI
@@ -69,7 +102,7 @@ async function run() {
         app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const updateStockNumber = req.body;
-            console.log(updateStockNumber, id);
+            // console.log(updateStockNumber, id);
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
 
@@ -82,6 +115,18 @@ async function run() {
             const result = await fruitsCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
+
+        // User get data (product/inventory-items/user-items) filtering by Email
+        // http://localhost:5000/myitems?email=kibriakhandaker66@gmail.com
+        app.get('/myitems', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = fruitsCollection.find(query);
+            const myitem = await cursor.toArray();
+            res.send(myitem);
+        })
+
+        //-------------- end all API
     }
     finally { }
 }
@@ -96,3 +141,24 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('Listening to port', port);
 })
+
+// function Verify for  user's Token/email ---
+function verifyJwToken(token) {
+    let email;
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+
+        if (err) {
+            email = 'Invalid email'
+        }
+        if (decoded) {
+            console.log(decoded)
+            email = decoded
+        }
+    });
+    return email;
+}
+// -------------------------------------------
+
+// creat JWT secret Token key
+// require('crypto').randomBytes(64).toString('hex')
+// require('crypto').randomBytes(256).toString('base64')
