@@ -115,24 +115,26 @@ async function run() {
         // User get data (product/inventory-items/user-items) filtering by Email
         // http://localhost:5000/myitems?email=kibriakhandaker66@gmail.com
         app.get('/myitems', async (req, res) => {
-
-            // const email = req.query.email;
-            // const query = { email: email };
-            // const cursor = fruitsCollection.find(query);
-            // const myitem = await cursor.toArray();
-            // res.send(myitem);
+            
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = fruitsCollection.find(query);
+            const myitem = await cursor.toArray();
+            res.send(myitem);
 
             //--------- iam trying but for token not working -str
 
-            const tokenHeader = req.headers.authorization;
-            const [email, accessToken] = tokenHeader.split(" ")
-            const decoded = verifyJwToken(accessToken)
-            if (email === decoded.email) {
-                const myitem = await fruitsCollection.find({ email: email }).toArray();
-                res.send(myitem)
-            } else {
-                res.send({ success: 'Your are UnAuthorized, Bro..! ' })
-            }
+            // const tokenHeader = req.headers.authorization;
+            // const [email, accessToken] = tokenHeader.split(" ")
+            // const decoded = verifyJwToken(accessToken)
+            // if (email === decoded.email) {
+            //     // const myitem = await fruitsCollection.find({email:email}).toArray();
+            //     const myitem = await fruitsCollection.find({ email: email }).toArray();
+            //     res.send(myitem)
+            //     // res.send({ success: 'Thanks, Your Item Successfully Added',result, product:newProduct })
+            // } else {
+            //     res.send({ success: 'Your are UnAuthorized, Bro..! ' })
+            // }
 
             //--------- for token not working -end
 
