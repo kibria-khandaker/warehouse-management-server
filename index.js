@@ -107,39 +107,29 @@ async function run() {
                     inStock: updateStockNumber.inStock,
                 },
             };
-
             const result = await fruitsCollection.updateOne(filter, updateDoc, options);
             res.send(result);
             console.log(updateDoc);
         })
 
         // User get data (product/inventory-items/user-items) filtering by Email
-        // http://localhost:5000/myitems?email=kibriakhandaker66@gmail.com
-        app.get('/myitems', async (req, res) => {
-
-            // const email = req.query.email;
-            // const query = { email: email };
-            // const cursor = fruitsCollection.find(query);
-            // const myitem = await cursor.toArray();
-            // res.send(myitem);
-
+        app.get('/myitems', async (req, res) => {    
             //--------- iam trying but for token not working -str
-
             const tokenHeader = req.headers.authorization;
-            const [email, accessToken] = tokenHeader.split(" ")
-            const decoded = verifyJwToken(accessToken)
-            if (email === decoded.email) {
-                const myitem = await fruitsCollection.find({ email: email }).toArray();
-                res.send(myitem)
-            } else {
-                res.send({ success: 'Your are UnAuthorized, Bro..! ' })
+            if (!tokenHeader){
+                res.send({ success: 'You are unauthorized to Access' })
+            }else {
+                const [email, accessToken] = tokenHeader.split(" ")
+                const decoded = verifyJwToken(accessToken)
+                if (email === decoded.email) {
+                    const myitem = await fruitsCollection.find({ email: email }).toArray();
+                    res.send(myitem)
+                } else {
+                    res.send({ success: 'Your are UnAuthorized, Bro..! ' })
+                }
             }
-
             //--------- for token not working -end
-
-
         })
-
         //-------------- end all API
     }
     finally { }
@@ -171,8 +161,3 @@ function verifyJwToken(token) {
     });
     return email;
 }
-// -------------------------------------------
-
-// creat JWT secret Token key
-// require('crypto').randomBytes(64).toString('hex')
-// require('crypto').randomBytes(256).toString('base64')
