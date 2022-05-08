@@ -72,7 +72,6 @@ async function run() {
             // console.log(tokenHeader);
             const [email, accessToken] = tokenHeader.split(" ")
             // console.log(email, accessToken);
-            // const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
             const decoded = verifyJwToken(accessToken)
             // console.log(decoded);
             // verify JWT token end --
@@ -130,6 +129,7 @@ async function run() {
             }
             //--------- for token not working -end
         })
+        
         //-------------- end all API
     }
     finally { }
