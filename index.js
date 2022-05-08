@@ -110,6 +110,7 @@ async function run() {
 
             const result = await fruitsCollection.updateOne(filter, updateDoc, options);
             res.send(result);
+            console.log(updateDoc);
         })
 
         // User get data (product/inventory-items/user-items) filtering by Email
