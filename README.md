@@ -4,7 +4,6 @@
 <br/>
 
 
-##### My Stack Overflow Questions ScreenShot. it is for proof. I heard Stack Overflow suddenly Question Delete without notice. So I send it [https://prnt.sc/p_PXw-dxPdsi](https://prnt.sc/p_PXw-dxPdsi)
 
 <br /><br />
 
