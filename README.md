@@ -12,7 +12,16 @@ I am Kibria,
 <br />
 I have read your description and you are looking for a front-end web developer for your company, your company focuses on warehouse management (inventory management) website . here is an example of a warehouse-type website. you can check from the point of list
 
-#### Here is my Details about my Project
+<br /><br />
+
+#### Some notes about My ( Warehouse management ) React Project
+
+- Details: Warehouse management system, Product store manage system , Authentication, Manufacturer items Order
+- Technology: React.js, react-bootstrap, react-query, Node.js, Express.js, MongoDB, Firebase-Authentication & Heroku, dotenv, CORS, JWT, react-firebase-hooks, react-icons, react-router-dom,
+<br /><br />
+
+
+#### Here Some Package use for the project:
 
 - full site based on `React`, `node`, `express`,
 - for navigation For `navigation` and `react router` i used `react-router-dom v6`
