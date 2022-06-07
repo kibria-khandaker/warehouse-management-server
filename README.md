@@ -20,7 +20,6 @@ I have read your description and you are looking for a front-end web developer f
 - Technology: React.js, react-bootstrap, react-query, Node.js, Express.js, MongoDB, Firebase-Authentication & Heroku, dotenv, CORS, JWT, react-firebase-hooks, react-icons, react-router-dom,
 <br /><br />
 
-
 #### Here Some Package use for the project:
 
 - full site based on `React`, `node`, `express`,
