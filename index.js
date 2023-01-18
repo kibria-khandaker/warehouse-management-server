@@ -138,7 +138,7 @@ run().catch(console.dir)
 
 // main root API & main route run and testing 
 app.get('/', (req, res) => {
-    res.send('Server Is Working Now broo')
+    res.send('Server Is Working Now,')
 });
 
 // This force to run Server to this port
