@@ -1,6 +1,6 @@
 # Fruits Stock House
 
-### My project Live link, And click [https://fruits-stock-house.web.app/](https://fruits-stock-house.web.app/)
+### My project Live link, And click [Project Live link](https://fruits-stock-house.web.app/)
 <br/>
 
 
